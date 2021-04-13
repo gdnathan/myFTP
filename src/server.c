@@ -8,54 +8,6 @@
 #include "server.h"
 #include "minishell.h"
 #include <arpa/inet.h>
-#include <unistd.h>
-
-typedef struct
-{
-    char *command;
-    char *argument;
-} line_t;
-
-char *readline(int fd)
-{
-    char *line = malloc(sizeof(char) * 256);
-    int i = 0;
-    char *tmp = malloc(sizeof(char) * 1);
-    int status = 1;
-
-    while (status != 0 && status != -1 && i < 256) {
-        status = read(fd, tmp, 1);
-        if (*tmp == '\n')
-            break;
-        line[i++] = *tmp;
-    }
-    return line;
-}
-
-line_t parse_line(char *src)
-{
-    int i = 0;
-    line_t line;
-
-    while (src[i] != '\0' || src[i] != ' ')
-        i++;
-    line.command = strndup(src, i);
-    if (src[i] == ' ') {
-        src += i + 1;
-        line.argument = strdup(src);
-    } else {
-        line.argument = "";
-    }
-    return line;
-}
-
-server_t init_server(network_t client)
-{
-    server_t server;
-
-    server.client = client;
-    return server;
-}
 
 void handle_command(network_t client)
 {
@@ -69,8 +21,11 @@ void handle_command(network_t client)
             status = functions[i](server, line.argument);
             break;
         }
+        i++;
     }
-    if (status == ERROR) {
+    if (commands[i] == NULL) {
+        fprintf(stderr, "Unknown command: %s.\n", line.command);
+    } else if (status == ERROR) {
         fprintf(stderr, "An error occured while executing command %s.\n",
             line.command);
     }

@@ -35,5 +35,14 @@ typedef struct
     network_t client;
 } server_t;
 
+typedef struct
+{
+    char *command;
+    char *argument;
+} line_t;
+
 void set_server_addr(network_t *server);
 status_t open_socket(network_t *server);
+server_t init_server(network_t client);
+line_t parse_line(char *src);
+char *readline(int fd);

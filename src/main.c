@@ -11,7 +11,8 @@ status_t ftp_server(network_t *);
 
 status_t parse_input(int ac, char **av, network_t *infos)
 {
-    if ((ac == 2 && (strcmp(av[1], "--help") || strcmp(av[1], "-h"))) || ac != 3) {
+    if ((ac == 2 && (strcmp(av[1], "--help") || strcmp(av[1], "-h"))) ||
+        ac != 3) {
         printf("USAGE: ./myftp port path\n");
         printf("\tport  is the port number on which the server socket listen");
         printf(
