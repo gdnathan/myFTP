@@ -18,8 +18,10 @@
 typedef enum
 {
     ERROR = 84,
-    EXIT = 0,
     OK = 0,
+    EXIT = 1,
+    KILL = 2,
+    DISCONNECT = 3,
 } status_t;
 
 typedef struct
@@ -32,7 +34,7 @@ typedef struct
 
 typedef struct
 {
-    network_t client;
+    int fd;
 } server_t;
 
 typedef struct
@@ -43,6 +45,6 @@ typedef struct
 
 void set_server_addr(network_t *server);
 status_t open_socket(network_t *server);
-server_t init_server(network_t client);
+server_t init_server(int fd);
 line_t parse_line(char *src);
 char *readline(int fd);

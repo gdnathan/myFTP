@@ -33,10 +33,14 @@ char *readline(int fd)
 
     while (status != 0 && status != -1 && i < 256) {
         status = read(fd, tmp, 1);
-        if (*tmp == '\n')
+        if (tmp[0] == '\0') return NULL;
+        if (tmp[0] == '\n' && line[i - 1] == '\r') {
             break;
-        line[i++] = *tmp;
+        }
+        line[i++] = tmp[0];
     }
+    line[i - 1] = '\0';
+    free (tmp);
     return line;
 }
 
@@ -45,22 +49,26 @@ line_t parse_line(char *src)
     int i = 0;
     line_t line;
 
-    while (src[i] != '\0' || src[i] != ' ')
+    if (!src) {
+        return (line_t){NULL, NULL};
+    }
+    while (src[i] && src[i] != ' ') {
         i++;
+    }
     line.command = strndup(src, i);
     if (src[i] == ' ') {
         src += i + 1;
         line.argument = strdup(src);
     } else {
-        line.argument = "";
+        line.argument = strdup("");
     }
     return line;
 }
 
-server_t init_server(network_t client)
+server_t init_server(int fd)
 {
     server_t server;
 
-    server.client = client;
+    server.fd = fd;
     return server;
 }

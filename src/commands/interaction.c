@@ -9,7 +9,7 @@
 
 status_t quit(server_t server, char *param)
 {
-    return OK;
+    return DISCONNECT;
 }
 
 status_t help(server_t server, char *param)
@@ -20,4 +20,9 @@ status_t help(server_t server, char *param)
 status_t noop(server_t server, char *param)
 {
     return OK;
+}
+
+status_t kill(server_t server, char *param)
+{
+    return KILL;
 }

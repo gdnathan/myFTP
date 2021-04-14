@@ -20,7 +20,7 @@ status_t cdup(server_t, char *param);
 
 // show files
 status_t pwd(server_t, char *param);
-status_t f_list(server_t, char *param);
+status_t list(server_t, char *param);
 
 // idk
 status_t dele(server_t, char *param);
@@ -29,6 +29,7 @@ status_t dele(server_t, char *param);
 status_t quit(server_t, char *param);
 status_t help(server_t, char *param);
 status_t noop(server_t, char *param);
+status_t kill(server_t, char *param);
 
 // data transfer mode
 status_t pasv(server_t, char *param);
@@ -54,11 +55,11 @@ static char* commands[15] = {
     "RETR",
     "STOR",
     "LIST",
-    NULL
+    "KILL"
 };
 
 
-static status_t (*functions[14])(server_t, char *param) = {
+static status_t (*functions[15])(server_t, char *param) = {
     user,
     pass,
     cwd,
@@ -72,6 +73,7 @@ static status_t (*functions[14])(server_t, char *param) = {
     noop,
     retr,
     stor,
-    f_list
+    list,
+    kill
 };
 // clang-format on
