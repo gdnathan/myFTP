@@ -6,11 +6,14 @@
 */
 
 #include "server.h"
+#include <string.h>
+#include <sys/stat.h>
 
 status_t ftp_server(network_t *);
 
 status_t parse_input(int ac, char **av, network_t *infos)
 {
+    int i = 0;
     if ((ac == 2 && (strcmp(av[1], "--help") || strcmp(av[1], "-h"))) ||
         ac != 3) {
         printf("USAGE: ./myftp port path\n");
@@ -24,6 +27,8 @@ status_t parse_input(int ac, char **av, network_t *infos)
     else
         return ERROR;
     infos->path = strdup(av[2]);
+    for (i = 0; infos->path[i] == '/'; i++);
+    mkdir(infos->path + i, 0777);
     return OK;
 }
 

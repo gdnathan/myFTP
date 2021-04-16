@@ -11,33 +11,33 @@
 #include <stdlib.h>
 
 // connection
-status_t user(server_t, char *param);
-status_t pass(server_t, char *param);
+status_t user(client_t *client, char *param);
+status_t pass(client_t *client, char *param);
 
 // move througt server files
-status_t cwd(server_t, char *param);
-status_t cdup(server_t, char *param);
+status_t cwd(client_t *client, char *param);
+status_t cdup(client_t *client, char *param);
 
 // show files
-status_t pwd(server_t, char *param);
-status_t list(server_t, char *param);
+status_t pwd(client_t *client, char *param);
+status_t list(client_t *client, char *param);
 
 // idk
-status_t dele(server_t, char *param);
+status_t dele(client_t *client, char *param);
 
 // server interaction
-status_t quit(server_t, char *param);
-status_t help(server_t, char *param);
-status_t noop(server_t, char *param);
-status_t kill(server_t, char *param);
+status_t quit(client_t *client, char *param);
+status_t help(client_t *client, char *param);
+status_t noop(client_t *client, char *param);
+status_t kill(client_t *client, char *param);
 
 // data transfer mode
-status_t pasv(server_t, char *param);
-status_t port(server_t, char *param);
+status_t pasv(client_t *client, char *param);
+status_t port(client_t *client, char *param);
 
 // data transfer
-status_t retr(server_t, char *param);
-status_t stor(server_t, char *param);
+status_t retr(client_t *client, char *param);
+status_t stor(client_t *client, char *param);
 
 // clang-format off
 static char* commands[15] = {
@@ -59,7 +59,7 @@ static char* commands[15] = {
 };
 
 
-static status_t (*functions[15])(server_t, char *param) = {
+static status_t (*functions[15])(client_t *client, char *param) = {
     user,
     pass,
     cwd,

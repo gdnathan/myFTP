@@ -14,6 +14,7 @@
 
 #include <netinet/in.h>
 #include <string.h>
+#include <stdbool.h>
 
 typedef enum
 {
@@ -32,10 +33,17 @@ typedef struct
     struct sockaddr_in adress;
 } network_t;
 
-typedef struct
+typedef struct client
 {
-    int fd;
-} server_t;
+    bool auth;
+    char *username;
+    char *password;
+    char *path;
+    int controlSocket;
+    int dataSocket;
+    struct client *next;
+    struct client *prev;
+} client_t;
 
 typedef struct
 {
@@ -45,6 +53,10 @@ typedef struct
 
 void set_server_addr(network_t *server);
 status_t open_socket(network_t *server);
-server_t init_server(int fd);
 line_t parse_line(char *src);
 char *readline(int fd);
+
+void new_client(int socket, client_t **head, network_t *server);
+void delete_client(int socket, client_t **head);
+client_t *find_client(int socket, client_t **head);
+status_t ftpsend(int socket, char *code, char *msg);

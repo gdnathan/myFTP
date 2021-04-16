@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-status_t dele(server_t server, char *param)
+status_t dele(client_t *client, char *param)
 {
     return OK;
 }

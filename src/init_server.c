@@ -60,15 +60,7 @@ line_t parse_line(char *src)
         src += i + 1;
         line.argument = strdup(src);
     } else {
-        line.argument = strdup("");
+        line.argument = NULL;
     }
     return line;
-}
-
-server_t init_server(int fd)
-{
-    server_t server;
-
-    server.fd = fd;
-    return server;
 }

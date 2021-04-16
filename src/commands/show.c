@@ -6,13 +6,15 @@
 */
 
 #include "server.h"
+#include <unistd.h>
 
-status_t pwd(server_t server, char *param)
+status_t pwd(client_t *client, char *param)
 {
+    ftpsend(client->controlSocket, "257", client->path);
     return OK;
 }
 
-status_t list(server_t server, char *param)
+status_t list(client_t *client, char *param)
 {
     return OK;
 }

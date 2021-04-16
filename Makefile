@@ -29,7 +29,7 @@ TEST_OBJ		=	$(patsubst $(SOURCE_DIR)/%.c,$(BUILD_DIR)/%.o,$(TEST_SOURCE))
 
 NAME	=	myftp
 
-CPPFLAGS	+=	-I./include
+CPPFLAGS	+=	-I./include -g
 CFLAGS 		+= -O2 -W -Wall -Wextra
 
 ifneq (,$(findstring debug,$(MAKECMDGOALS)))
@@ -40,8 +40,6 @@ ifneq (,$(findstring tests,$(MAKECMDGOALS)))
 	CPPFLAGS += -D__TESTS -lgtest -lgtest_main --coverage
 endif
 
-all::
-	@mkdir -p build/
 all::	$(NAME)
 all::	message
 
@@ -52,7 +50,7 @@ message:
 	@echo -e "\e[1m[INFO]\t$(GREEN)Compilation successful ✔$(END)"
 
 $(NAME): $(OBJ)
-	@$(CC) -o $@ $^
+	@$(CC) -o $@ $^ $(CFLAGS)
 
 
 .SECONDEXPANSION:
@@ -62,12 +60,13 @@ $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.c | $$(@D)/.
 	@mkdir -p $(@D)
 	@$(CC) $(CPPFLAGS) -c $< -o $@
 
-$(BUILDDIR)/.:
-					mkdir $@
+$(BUILD_DIR)/.:
+		@mkdir -p $@
 
-# Règle pour créer n’importe quel autre dossier et/ou sous-dossier
-$(BUILDDIR)%/.:
-					mkdir -p $@
+$(BUILD_DIR)%/.:
+		@mkdir -p $@
+
+.PRECIOUS:			$(BUILD_DIR)/. $(BUILD_DIR)%/.
 
 clean:
 	@rm -rfv $(shell find $(BUILD_DIR) -name "*.o")
